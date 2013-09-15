@@ -1,0 +1,39 @@
+SLIDE 1:
+
+Code attributes a labels which can be associated with a subroutine. They don't have a particular meaning unless you assign meanings.
+
+Code attributes are processed at compile time, not run time. Consider them as metadata for the Perl compiler.
+
+SLIDE 2:
+
+Actually, variables can have attributes, just like subroutines. They are used less often. In the current version of Perl, they are not quite ready for Prime Time.
+
+SLIDE 3:
+
+Perl 5.18 docs have this to say about variable attributes.
+
+SLIDE 4:
+
+Here is are some simple examples of a subroutines with attributes. Attributes appear in the subroutine declaration after the subroutine name and before the body. They are delimited by colons.
+
+mySub() has one attribute: Foo. myOtherSub() has two attributes: Foo and Bar.
+
+As things stand, however, this won't compile because neither attribute exists.
+
+SLIDE 5:
+
+Perl makes very limited use of code attributes. There are only a few built-in ones which have varying degrees of usefulness. 
+
+locked - Prevent a subroutine from running simultaneously in multiple threads. This has had no effect since Perl 5.10
+
+method - Indicates that the subroutine is a method. All that does at this time is prevent the "Ambiguous call resolved as CORE::%s" warning.
+
+lvalue - Indicates that the subroutine is an lvalue -- that it can be assigned to 
+
+SLIDE 6:
+
+If you want to interact with attributes, you can use the attributes pragma. If you "use attributes", you get two methods. get() and reftype().
+
+Both take a reference to the subroutine in question.
+
+

@@ -42,6 +42,62 @@
         <h4>Phoenix.pm</h4>
       </div>
 
+	  <div class="slide">
+		<h1>What are Code Attributes?</h1>
+		<p>Attributes are labels which can be associated with subroutines. They can mean anything you like.</p>
+		<p>They are processed at compile time, not runtime. Consider them metadata for the Perl compiler.</p>
+	  </div>
+
+	  <div class="slide">
+		<h1>Variable Attributes</h1>
+		<p>What's so special about subroutines? Variables demand equal rights!</p>
+	  </div>
+
+	  <div class="slide">
+		<h1>Variable Attributes</h1>
+		<p><strong>WARNING:</strong> attribute declarations for variables are still evolving. The semantics and interfaces of such declarations could change in future versions. They are present for purposes of experimentation with what the semantics ought to be. Do not rely on the current implementation of this feature.</p>
+	  </div>
+
+	  <div class="slide">
+		<h1></h1>
+		<pre>
+sub mySub : Foo {
+	print "Whatever\n";
+}
+
+sub myOtherSub : Foo : Bar {
+	print "meh.\n";
+}
+		</pre>
+	  </div>
+
+	  <div class="slide">
+		<h1>Built-In Attributes</h1>
+		<ul>
+			<li><strong>locked</strong> - Not used since Perl 5.10.</li>
+			<li><strong>method</strong> - Prevent "Ambiguous call resolved as CORE::%s" warning.</li>
+			<li><strong>lvalue</strong> - Subrouine can be assigned to. (<a href="examples/lvalue.pl">lvalue.pl</a>)</li>
+		</ul>
+	  </div>
+
+	  <div class="slide">
+		<h1>attributes pragma</h1>
+		<pre>
+use attributes;
+		</pre>
+	  </div>
+
+	  <div class="slide">
+		<h1>attributes pragma</h1>
+		<pre>
+use attributes;
+		</pre>
+		<ul>
+			<li><strong>get()</strong> - Get a list of attributes for a subroutine</li>
+			<li><strong>reftype()</strong> - Get the type of reference to which the attributes apply ('CODE')</li>
+		</ul>
+	  </div>
+
   </body>
 
 </html>
