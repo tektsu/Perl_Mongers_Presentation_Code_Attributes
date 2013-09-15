@@ -14,7 +14,9 @@ Perl 5.18 docs have this to say about variable attributes.
 
 SLIDE 4:
 
-Here is are some simple examples of a subroutines with attributes. Attributes appear in the subroutine declaration after the subroutine name and before the body. They are delimited by colons.
+Here is are some simple examples of a subroutines with attributes.
+
+Attributes appear in the subroutine declaration after the subroutine name and before the body. They are delimited by colons.
 
 mySub() has one attribute: Foo. myOtherSub() has two attributes: Foo and Bar.
 
@@ -30,10 +32,56 @@ method - Indicates that the subroutine is a method. All that does at this time i
 
 lvalue - Indicates that the subroutine is an lvalue -- that it can be assigned to 
 
-SLIDE 6:
+SLIDE 6, 7:
 
 If you want to interact with attributes, you can use the attributes pragma. If you "use attributes", you get two methods. get() and reftype().
 
 Both take a reference to the subroutine in question.
+
+get() returns a list of all the attributes the subroutine has.
+
+reftype() returns the type of object which has the attributes. Since we are working with subroutines, this will always be 'CODE'.
+
+SLIDE 8:
+
+When you declare a subroutine with attributes, A subroutine in the current package (or a superclass) called MODIFY_CODE_ATTRIBUTES() is called.
+
+It is passed the package name, a reference to the subroutine, and a list of attributes.
+
+It returns a list of attributes that were passed in but it doesn't know how to handle.
+
+If there are any unhandled attributes, the program will die.
+
+If you declare this in a subclass, it can call the superclass' version, then handle any attributes the superclass didn't handle.
+
+What this subroutine does is entirely up to you. 
+
+SLIDE 9:
+
+When you call attributes::get(), FETCH_CODE_ATTRIBUTES() is called.
+
+It is passed the package name and a reference to the subroutine, and it returns the list of attributes on that subroutine.
+
+It can do any other processing you would like.
+
+SLIDE 10:
+
+So now we have a set of low-level tools we could use to accomplish just about anything.
+
+Of course, we'd have to know a lot about perl internals and be really clever.
+
+SLIDE 11:
+
+There is a danger to being too clever.
+
+SLIDE 12:
+
+The solution, steal from someone cleverer.
+
+The Attribute::Handlers module handles a lot of the behind-the-scenes details.
+
+This module allows other modules to define subroutines to handle attributes.
+
+This simplifies using attributes a great deal.
 
 

@@ -76,7 +76,7 @@ sub myOtherSub : Foo : Bar {
 		<ul>
 			<li><strong>locked</strong> - Not used since Perl 5.10.</li>
 			<li><strong>method</strong> - Prevent "Ambiguous call resolved as CORE::%s" warning.</li>
-			<li><strong>lvalue</strong> - Subrouine can be assigned to. (<a href="examples/lvalue.pl">lvalue.pl</a>)</li>
+			<li><strong>lvalue</strong> - Subrouine can be assigned to. (<a href="examples/lvalue.pl" target="blank">lvalue.pl</a>)</li>
 		</ul>
 	  </div>
 
@@ -98,6 +98,54 @@ use attributes;
 		</ul>
 	  </div>
 
+	  <div class="slide">
+		<h1>MODIFY_CODE_ATTRIBUTES()</h1>
+		<ul>
+			<li>Called when a subroutine with attributes is declared (compile time)</li>
+			<li>Parameters:</li>
+			<ul>
+				<li>Package name</li>
+				<li>Code reference</li>
+				<li>List of attributes</li>
+			</ul>
+			<li>Returns a list of attributes not handled</li>
+		</ul>
+	  </div>
+
+	  <div class="slide">
+		<h1>FETCH_CODE_ATTRIBUTES()</h1>
+		<ul>
+			<li>Called by attributes::get()</li>
+			<li>Parameters:</li>
+			<ul>
+				<li>Package name</li>
+				<li>Code reference</li>
+			</ul>
+			<li>Returns a list of attributes on the subroutine</li>
+		</ul>
+	  </div>
+
+	  <div class="slide">
+		<h1>So now what?</h1>
+		<ul>
+			<li>We have a set of tools</li>
+			<li>Time to get clever</li>			
+		</ul>
+	  </div>
+
+	  <div class="slide">
+		<blockquote>Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.<br /><br />- Brian Kernighan</blockquote>
+	  </div>
+
+	  <div class="slide">
+		<h1>Attribute::Handlers</h1>
+		<ul>
+			<li>Simplifies the creation of attributes</li>
+			<li>Allows packages to define attribute handler subroutines</li>
+		</ul>
+	  </div>
+
   </body>
 
 </html>
+
