@@ -145,6 +145,153 @@ use attributes;
 		</ul>
 	  </div>
 
+	  <div class="slide">
+		<h1>A Simple Code Attrbute Handler</h1>
+		<pre>
+sub Foo:ATTR(CODE) {
+	print "foo!\n";
+}
+
+sub doSomethingUseful : Foo {
+	print "Doing useful things\n";
+}
+		</pre>
+		<p>Example: attr1.pl</p>
+	  </div>
+
+	  <div class="slide">
+		<h1>When is Foo() running?</h1>
+		<pre>
+sub Foo:ATTR(CODE) {
+	print "foo!\n";
+}
+
+sub doSomethingUseful : Foo {
+	print "Doing useful things\n";
+}
+		</pre>
+		<p>Example: attr2.pl</p>
+	  </div>
+
+	  <div class="slide">
+		<h1>When is Foo() running?</h1>
+		<pre>
+sub Foo:ATTR(CODE,END) {
+	print "foo!\n";
+}
+
+sub doSomethingUseful : Foo {
+	print "Doing useful things\n";
+}
+		</pre>
+	  </div>
+
+	  <div class="slide">
+		<h1>Passing Parameters</h1>
+		<pre>
+sub Bar:ATTR(CODE) {
+	...
+}
+
+sub doStuff : Bar(1, 'test', $var) {
+	...
+}
+		</pre>
+	  </div>
+
+	  <div class="slide">
+		<h1>What the Hander Sees</h1>
+		<pre>
+sub Bar:ATTR(CODE) {
+	my ($package, $sym, $code, $name,
+	    $data, $phase, $file, $linenum);
+}
+		</pre>
+		<p>Example: attr3.pl</p>
+	  </div>
+
+	  <div class="slide">
+		<h1></h1>
+		<p><span style="font-size:72pt">WHY?</style></p>
+	  </div>
+
+	  <div class="slide">
+		<h1>Simple Logging Example</h1>
+		<ul>
+			<li>You want to be told when a subroutine is entered and exited.</li>
+			<li>You don't want to have to put a bunch of print statements in the subroutine.</li>
+		</ul>
+	  </div>
+
+	  <div class="slide">
+		<h1>Rewriting a Subroutine at Compile Time</h1>
+		<pre>
+sub SayWhen : ATTR(CODE) {
+	my ($package, $sym, $code) = @_;
+
+	no warnings 'redefine';
+	my $name = "${package}::"
+	  . *{$sym}{NAME};
+	*{$sym} = sub {
+		print "Entering $name\n";
+		my @results = $code->(@_);
+		print "Exiting $name\n";
+		return @results;
+	};
+}
+		</pre>
+	  </div>
+
+	  <div class="slide">
+		<h1>Rewriting a Subroutine at Compile Time</h1>
+		<pre>
+sub SayWhen : ATTR(CODE) {
+	my ($package, $sym, $code,
+	    $name, $data) = @_;
+
+	no warnings 'redefine';
+	my $name  = "${package}::"
+	  . *{$sym}{NAME};
+	my $prefix = $data->[0] || '>';
+	*{$sym} = sub {
+		print "$prefix Entering $name\n";
+		my @results = $code->(@_);
+		print "$prefix Exiting $name\n";
+		return @results;
+	};
+}
+		</pre>
+		<p>Example: logger.pl</p>
+	  </div>
+
+	  <div class="slide">
+		<h1>Use Cases</h1>
+	  </div>
+
+	  <div class="slide">
+		<h1>Use Cases</h1>
+		<ul>
+			<li>More complex logging</li>
+		</ul>
+	  </div>
+
+	  <div class="slide">
+		<h1>Use Cases</h1>
+		<ul>
+			<li>More complex logging</li>
+			<li>Registration</li>
+		</ul>
+	  </div>
+
+	  <div class="slide">
+		<h1>Use Cases</h1>
+		<ul>
+			<li>More complex logging</li>
+			<li>Registration</li>
+			<li>Wrapping tests in database transactions</li>
+		</ul>
+	  </div>
+
   </body>
 
 </html>
