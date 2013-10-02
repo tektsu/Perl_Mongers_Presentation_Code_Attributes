@@ -228,10 +228,35 @@ is expected to run.
 SLIDE 26:
 
 Here's an example of something I have done in the real world. This the last example I'll show.
-I don't have any running code to demonstrate, since in principle it's the same as the logging
-example. I mention it to show an idea for use, not a different technique.
+I don't have any running code to demonstrate, since in principle it's exactly the same as the
+logging example. I mention it to show an idea for use, not a different technique.
 
 SLIDE 27:
+
+The situation is that I have an empty database, and I have some tests to run. Some of the tests
+will require some items in the database, to start with, and will themselves modify the database.
+When the ttest method is complete, I want to put the datanase back into it's original, empty
+configuration.
+
+So I have an attribute called :db, which, if passed no parameters, just starts
+a transaction on the database, runs the test method, and the rolls back all
+changes to the database.
+
+For a particular series of tests, I need a test account set up before the
+tests start. There is a named parameter to :db called 'needs' which is an
+array reference of items that need to be set up prior to the test running.
+The important thing is that that setup happens inside the transaction, so
+it gets rolled back at the end of the test as well.
+
+SLIDE 28:
+
+The technique for doing this is fundamentally the same as what we did for
+the logging example.
+
+SLIDE 29:
+
+Q/A
+
 
 
 
