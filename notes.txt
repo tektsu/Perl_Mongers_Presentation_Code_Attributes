@@ -1,12 +1,16 @@
 SLIDE 1:
 
-Code attributes a labels which can be associated with a subroutine. They don't have a particular meaning unless you assign meanings.
+Code attributes a labels which can be associated with a subroutine. They don't
+have a particular meaning unless you assign meanings.
 
-Code attributes are processed at compile time, not run time. Consider them as metadata for the Perl compiler.
+Code attributes are processed at compile time, not run time. Consider them as
+metadata for the Perl compiler.
 
 SLIDE 2:
 
-Actually, variables can have attributes, just like subroutines. They are used less often. In the current version of Perl, they are not quite ready for Prime Time.
+Actually, variables can have attributes, just like subroutines. They are used
+less often. In the current version of Perl, they are not quite ready for Prime
+Time.
 
 SLIDE 3:
 
@@ -16,7 +20,8 @@ SLIDE 4:
 
 Here is are some simple examples of a subroutines with attributes.
 
-Attributes appear in the subroutine declaration after the subroutine name and before the body. They are delimited by colons.
+Attributes appear in the subroutine declaration after the subroutine name and
+before the body. They are delimited by colons.
 
 mySub() has one attribute: Foo. myOtherSub() has two attributes: Foo and Bar.
 
@@ -24,35 +29,45 @@ As things stand, however, this won't compile because neither attribute exists.
 
 SLIDE 5:
 
-Perl makes very limited use of code attributes. There are only a few built-in ones which have varying degrees of usefulness. 
+Perl makes very limited use of code attributes. There are only a few built-in
+ones which have varying degrees of usefulness. 
 
-locked - Prevent a subroutine from running simultaneously in multiple threads. This has had no effect since Perl 5.10
+locked - Prevent a subroutine from running simultaneously in multiple threads.
+This has had no effect since Perl 5.10
 
-method - Indicates that the subroutine is a method. All that does at this time is prevent the "Ambiguous call resolved as CORE::%s" warning.
+method - Indicates that the subroutine is a method. All that does at this time
+is prevent the "Ambiguous call resolved as CORE::%s" warning.
 
-lvalue - Indicates that the subroutine is an lvalue -- that it can be assigned to 
+lvalue - Indicates that the subroutine is an lvalue -- that it can be assigned
+to 
 
 SLIDE 6, 7:
 
-If you want to interact with attributes, you can use the attributes pragma. If you "use attributes", you get two methods. get() and reftype().
+If you want to interact with attributes, you can use the attributes pragma.
+If you "use attributes", you get two methods. get() and reftype().
 
 Both take a reference to the subroutine in question.
 
 get() returns a list of all the attributes the subroutine has.
 
-reftype() returns the type of object which has the attributes. Since we are working with subroutines, this will always be 'CODE'.
+reftype() returns the type of object which has the attributes. Since we are
+working with subroutines, this will always be 'CODE'.
 
 SLIDE 8:
 
-When you declare a subroutine with attributes, A subroutine in the current package (or a superclass) called MODIFY_CODE_ATTRIBUTES() is called.
+When you declare a subroutine with attributes, A subroutine in the current
+package (or a superclass) called MODIFY_CODE_ATTRIBUTES() is called.
 
-It is passed the package name, a reference to the subroutine, and a list of attributes.
+It is passed the package name, a reference to the subroutine, and a list of
+attributes.
 
-It returns a list of attributes that were passed in but it doesn't know how to handle.
+It returns a list of attributes that were passed in but it doesn't know how
+to handle.
 
 If there are any unhandled attributes, the program will die.
 
-If you declare this in a subclass, it can call the superclass' version, then handle any attributes the superclass didn't handle.
+If you declare this in a subclass, it can call the superclass' version, then
+handle any attributes the superclass didn't handle.
 
 What this subroutine does is entirely up to you. 
 
@@ -60,13 +75,15 @@ SLIDE 9:
 
 When you call attributes::get(), FETCH_CODE_ATTRIBUTES() is called.
 
-It is passed the package name and a reference to the subroutine, and it returns the list of attributes on that subroutine.
+It is passed the package name and a reference to the subroutine, and it
+returns the list of attributes on that subroutine.
 
 It can do any other processing you would like.
 
 SLIDE 10:
 
-So now we have a set of low-level tools we could use to accomplish just about anything.
+So now we have a set of low-level tools we could use to accomplish just about
+anything.
 
 Of course, we'd have to know a lot about perl internals and be really clever.
 
@@ -86,12 +103,13 @@ This simplifies using attributes a great deal.
 
 SLIDE 13:
 
-With Attribute::Handers, you define a code attribute handler by giving the the attribute :ATTR(CODE). That's all you need.
-You can use the Foo code attribute as you see here. If you were to run this, it would print "foo!" followed
+With Attribute::Handers, you define a code attribute handler by giving the the
+attribute :ATTR(CODE). That's all you need. You can use the Foo code attribute
+as you see here. If you were to run this, it would print "foo!" followed
 by "Doing useful things".
 
-By the way, notice that I have capitalized the attribute name. Perl reserves all uncapitalized attribute.
-If you try to use one, Perl will whine at you.
+By the way, notice that I have capitalized the attribute name. Perl reserves
+all uncapitalized attribute. If you try to use one, Perl will whine at you.
 
 SLIDE 14:
 
@@ -99,17 +117,19 @@ So it looks like it worked, but when did Foo run?
 
 In this example, we have two subroutines both using the same Foo attribute.
 
-Although we run the first subroutine once and the second subroutine twice, notice that "foo!" gets printed twice,
-not three times. And both "foo!"s get printed before anything else is printed by either subroutine.
+Although we run the first subroutine once and the second subroutine twice,
+notice that "foo!" gets printed twice, not three times. And both "foo!"s get
+printed before anything else is printed by either subroutine.
 
-This is because the calls to Foo() happen at compile time, when the subroutines are declared, not at runtime when the 
-subroutines are called.
+This is because the calls to Foo() happen at compile time, when the
+subroutines are declared, not at runtime when the subroutines are called.
 
 Actually, the DEFAULT is that it runs at runtime; in the CHECK phase. 
 
 SLIDE 15:
 
-It can also be set to run in the BEGIN, INIT or END phases. Or some or all of them.
+It can also be set to run in the BEGIN, INIT or END phases. Or some or all
+of them.
 
 (Demo changes in attr2.pl)
 
@@ -147,96 +167,100 @@ It seems really complicated.
 
 What can we do with code that runs at compile time? That's up to you!
 
-Things become much more interesting when you realize that the handler can modify
-the subroutine being declared.
+Things become much more interesting when you realize that the handler can
+modify the subroutine being declared.
 
 SLIDE 19:
 
 A logging example.
 
-You want to print to the console whenever a subroutine is entered and exited.
-Being a lazy Perl programmer, you don't want to put a bunch of print statements
-in the subroutines. That is time consuming and error prone, if there are multiple
-exit points you'll probably miss one, you'll probably forget to take them out
-leading to laughter at your expense at code reviews.
+You want to print to the console whenever a subroutine is entered and
+exited. Being a lazy Perl programmer, you don't want to put a bunch of print
+statements in the subroutines. That is time consuming and error prone, if
+there are multiple exit points you'll probably miss one, you'll probably
+forget to take them out leading to laughter at your expense at code reviews.
 
 Unsurprisingly, the solution I'll propose here is to use a code attribute.
 
 SLIDE 20:
 
-The key here is rewriting the subroutine. In this case, we want the modified subroutine
-to log it's name to the console, do whatever the subroutine was going to do anyway,
-then log the name to the console again.
+The key here is rewriting the subroutine. In this case, we want the modified
+subroutine to log it's name to the console, do whatever the subroutine was
+going to do anyway, then log the name to the console again.
 
-Everything we need to do this is passed to the attribute handler. In fact, we don't need
-all eight parameters, just the first three.
+Everything we need to do this is passed to the attribute handler. In fact,
+we don't need all eight parameters, just the first three.
 
-First, we need to find the name of the subroutine, including the package name. The package is
-the first parameter passed to the handler, so that's easy. The second parameter is the 
-symbol table entry for the subroutine, which we can query for the subroutine name.
+First, we need to find the name of the subroutine, including the package name.
+The package is the first parameter passed to the handler, so that's easy. The
+second parameter is the  symbol table entry for the subroutine, which we can
+query for the subroutine name.
 
-Then we create a new subroutine, and assign it to the symbol table entry, overwriting the
-original. Since the new subroutine is a closure over the original parameters, they are
-available unchanged inside the subroutine. Of primary interest to us here is the third
-parameter, a reference to the original subroutine. This lets us call it, even though
-it has been overwrtten.
+Then we create a new subroutine, and assign it to the symbol table entry,
+overwriting the original. Since the new subroutine is a closure over the
+original parameters, they are available unchanged inside the subroutine. Of
+primary interest to us here is the third parameter, a reference to the
+original subroutine. This lets us call it, even though it has been overwrtten.
 
-Now, whenever we call any subroutine with the SayWhen attribute, it'll do whatever it was going
-to do originally, but it will log its name to the screen before it starts and after it exits.
+Now, whenever we call any subroutine with the SayWhen attribute, it'll do
+whatever it was going to do originally, but it will log its name to the screen
+before it starts and after it exits.
 
-Note that the original subroutine is called with any parameters passed at runtime, and
-the new subroutine returns whatever the original did.
+Note that the original subroutine is called with any parameters passed at
+runtime, and the new subroutine returns whatever the original did.
 
 SLIDE 21:
 
-I mentioned earlier that an attribute handle could take paramaters. These are available
-inside the handler as the fifth parameter, which is an array reference to what was
-passed in.
+I mentioned earlier that an attribute handle could take paramaters. These are
+available inside the handler as the fifth parameter, which is an array
+reference to what was passed in.
 
-We'll modify our SayWhen handler to accept an optional prefix which it will display whenever 
-it logs to the console.
+We'll modify our SayWhen handler to accept an optional prefix which it will
+display whenever it logs to the console.
 
-The changes are simple. Just grab the fifth parameter (we'll get the fourth on too, but we
-don't care, since it's just the name of the handler) and use whatever it's first element
-is as the prefix. If there is nothing there, we'll default to a greater-than sign. Then
-we'll include the prefix in the logging output.
+The changes are simple. Just grab the fifth parameter (we'll get the fourth
+on too, but we don't care, since it's just the name of the handler) and use
+whatever it's first element is as the prefix. If there is nothing there,
+we'll default to a greater-than sign. Then we'll include the prefix in the
+logging output.
 
 SLIDE 22:
 
-Of course, you don;t have to modify the subroutine, or if you do, you don't have to call the
-original version at all. I haven't thought of a good use for that, but whatever floats your
-boat...
+Of course, you don't have to modify the subroutine, or if you do, you don't
+have to call the original version at all. I haven't thought of a good use for
+that, but whatever floats your boat...
 
 Some things you might use this for:
 
 SLIDE 23:
 
-More complex logging. You don't have to just print to the screen. You can use a Log attribute
-to enable features perhaps based on environment. Or you could make a list of subroutines that
-have been called.
+More complex logging. You don't have to just print to the screen. You can
+use a Log attribute to enable features perhaps based on environment. Or you
+could make a list of subroutines that have been called.
 
 SLIDE 24:
 
-You might use code attributes to marks a subroutine as legal to run under sertain conditions,
-or to assign priorities for a scheduler.
+You might use code attributes to marks a subroutine as legal to run under
+certain conditions, or to assign priorities for a scheduler.
 
 SLIDE 25:
 
-An attribute handler is used in the Test::Class to specify the number of tests a test method
-is expected to run.
+An attribute handler is used in the Test::Class to specify the number of
+tests a test method is expected to run.
 
 SLIDE 26:
 
-Here's an example of something I have done in the real world. This the last example I'll show.
-I don't have any running code to demonstrate, since in principle it's exactly the same as the
-logging example. I mention it to show an idea for use, not a different technique.
+Here's an example of something I have done in the real world. This the last
+example I'll show. I don't have any running code to demonstrate, since in
+principle it's exactly the same as the logging example. I mention it to show
+an idea for use, not a different technique.
 
 SLIDE 27:
 
-The situation is that I have an empty database, and I have some tests to run. Some of the tests
-will require some items in the database, to start with, and will themselves modify the database.
-When the ttest method is complete, I want to put the datanase back into it's original, empty
-configuration.
+The situation is that I have an empty database, and I have some tests to run.
+Some of the tests will require some items in the database, to start with, and
+will themselves modify the database. When the ttest method is complete, I
+want to put the datanase back into it's original, empty configuration.
 
 So I have an attribute called :db, which, if passed no parameters, just starts
 a transaction on the database, runs the test method, and the rolls back all
