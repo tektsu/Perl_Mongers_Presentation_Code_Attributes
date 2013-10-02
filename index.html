@@ -288,8 +288,34 @@ sub SayWhen : ATTR(CODE) {
 		<ul>
 			<li>More complex logging</li>
 			<li>Registration</li>
-			<li>Wrapping tests in database transactions</li>
+			<li>Asserting test counts</li>
 		</ul>
+	  </div>
+
+	  <div class="slide">
+		<h1>Use Cases</h1>
+		<ul>
+			<li>More complex logging</li>
+			<li>Registration</li>
+			<li>Asserting test counts</li>
+			<li>Wrapping methods in database transactions</li>
+		</ul>
+	  </div>
+
+	  <div class="slide">
+		<h1></h1>
+		<pre>
+sub testStuff : Test(10) : db(needs => ['test_account']) {
+	my $test = shift;
+
+	is(1, 1, "Does one equal one today");
+	...
+}
+		</pre>
+	  </div>
+
+	  <div class="slide">
+		<h1>Q and (hopefully) A</h1>
 	  </div>
 
   </body>
