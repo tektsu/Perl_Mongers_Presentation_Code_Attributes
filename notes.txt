@@ -279,6 +279,25 @@ the logging example.
 
 SLIDE 28:
 
+Attributes::Hander is a fine module with many options. You can chose when
+you want a handler to run, and you can easily handle variable attributes if
+you really wanted to.
+
+If all you want to do is run a subroutine attribute at compile time, then
+there is another choice: Sub::Attribute.
+
+Sub::Attribute works very much like Attribute::Handler. The primary
+differences are how the attribute is defined, and the fact that the parameters
+passed in to the attribute are passed as a single string.
+(Attribute::Handlers actually has an option to bass the paramaters as a string
+if you prefer.)
+
+Except for having to parse the parameters manually, it's about as easy to use
+as Attribute::Handlers, but since it only does the one thing, it's way
+easier to wade through the documentation.
+
+Here is the db example using Sub::Attribute.
+
 Q/A
 
 
