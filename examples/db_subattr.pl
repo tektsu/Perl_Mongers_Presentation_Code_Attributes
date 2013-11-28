@@ -1,3 +1,4 @@
+#!/bin/env perl 
 use strict;
 use warnings;
 use Sub::Attribute;
