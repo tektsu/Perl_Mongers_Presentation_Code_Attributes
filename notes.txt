@@ -90,7 +90,8 @@ SLIDE 10:
 So now we have a set of low-level tools we could use to accomplish just about
 anything.
 
-Of course, we'd have to know a lot about perl internals and be really clever.
+Of course, we'd have to know a bit about perl internals, do a lot of work,
+and be really clever.
 
 SLIDE 11:
 
