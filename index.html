@@ -45,7 +45,7 @@
 	  <div class="slide">
 		<h1>What are Code Attributes?</h1>
 		<p>Attributes are labels which can be associated with subroutines. They can mean anything you like.</p>
-		<p>They are processed at compile time, not runtime. Consider them metadata for the Perl compiler.</p>
+		<p>They are processed at <strong>compile</strong> time, not runtime. Consider them metadata for the Perl compiler.</p>
 	  </div>
 
 	  <div class="slide">
@@ -76,7 +76,7 @@ sub myOtherSub : Foo : Bar {
 		<ul>
 			<li><strong>locked</strong> - Not used since Perl 5.10.</li>
 			<li><strong>method</strong> - Prevent "Ambiguous call resolved as CORE::%s" warning.</li>
-			<li><strong>lvalue</strong> - Subrouine can be assigned to. (<a href="examples/lvalue.pl" target="blank">lvalue.pl</a>)</li>
+			<li><strong>lvalue</strong> - Subrouine can be assigned to. Experimental. (Example: lvalue.pl)</li>
 		</ul>
 	  </div>
 
@@ -305,13 +305,14 @@ sub SayWhen : ATTR(CODE) {
 	  <div class="slide">
 		<h1></h1>
 		<pre>
-sub testStuff : Test(10) : db(needs => ['test_account']) {
+sub testStuff : Test(10) : DB(needs => ['test_account']) {
 	my $test = shift;
 
 	is(1, 1, "Does one equal one today");
 	...
 }
 		</pre>
+		<p>Example: db.pl</p>
 	  </div>
 
 	  <div class="slide">

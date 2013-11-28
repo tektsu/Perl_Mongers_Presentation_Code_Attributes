@@ -1,10 +1,14 @@
 SLIDE 1:
 
-Code attributes a labels which can be associated with a subroutine. They don't
+Code attributes are labels which can be associated with a subroutine. They don't
 have a particular meaning unless you assign meanings.
 
 Code attributes are processed at compile time, not run time. Consider them as
 metadata for the Perl compiler.
+
+Perl is an interpreted language, but it does have a compile phase that is 
+different from the execution phase. This will have a big implication for code 
+attributes, as we'll see shortly.
 
 SLIDE 2:
 
@@ -39,7 +43,8 @@ method - Indicates that the subroutine is a method. All that does at this time
 is prevent the "Ambiguous call resolved as CORE::%s" warning.
 
 lvalue - Indicates that the subroutine is an lvalue -- that it can be assigned
-to 
+to. While fun, this is still experimental, and as currently implemented,can be
+used to violate encapulation.
 
 SLIDE 6, 7:
 
@@ -124,7 +129,8 @@ printed before anything else is printed by either subroutine.
 This is because the calls to Foo() happen at compile time, when the
 subroutines are declared, not at runtime when the subroutines are called.
 
-Actually, the DEFAULT is that it runs at runtime; in the CHECK phase. 
+Actually, the DEFAULT is that it runs at the end of the compile phase;
+in the CHECK block. 
 
 SLIDE 15:
 
@@ -185,7 +191,7 @@ Unsurprisingly, the solution I'll propose here is to use a code attribute.
 SLIDE 20:
 
 The key here is rewriting the subroutine. In this case, we want the modified
-subroutine to log it's name to the console, do whatever the subroutine was
+subroutine to log its name to the console, do whatever the subroutine was
 going to do anyway, then log the name to the console again.
 
 Everything we need to do this is passed to the attribute handler. In fact,
@@ -250,34 +256,28 @@ tests a test method is expected to run.
 
 SLIDE 26:
 
-Here's an example of something I have done in the real world. This the last
-example I'll show. I don't have any running code to demonstrate, since in
-principle it's exactly the same as the logging example. I mention it to show
-an idea for use, not a different technique.
+Here's an example of something I have done in the real world. 
+
+Some of the tests will require some items in the database, to start with, and
+will themselves modify the database. When the test method is complete, I
+want to put the database back into it's original, empty configuration.
 
 SLIDE 27:
 
-The situation is that I have an empty database, and I have some tests to run.
-Some of the tests will require some items in the database, to start with, and
-will themselves modify the database. When the ttest method is complete, I
-want to put the datanase back into it's original, empty configuration.
-
-So I have an attribute called :db, which, if passed no parameters, just starts
+So I have an attribute called :DB, which, if passed no parameters, just starts
 a transaction on the database, runs the test method, and the rolls back all
 changes to the database.
 
 For a particular series of tests, I need a test account set up before the
 tests start. There is a named parameter to :db called 'needs' which is an
 array reference of items that need to be set up prior to the test running.
-The important thing is that that setup happens inside the transaction, so
+The important thing is that the setup happens inside the transaction, so
 it gets rolled back at the end of the test as well.
-
-SLIDE 28:
 
 The technique for doing this is fundamentally the same as what we did for
 the logging example.
 
-SLIDE 29:
+SLIDE 28:
 
 Q/A
 
