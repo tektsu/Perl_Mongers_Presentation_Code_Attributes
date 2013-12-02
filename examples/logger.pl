@@ -7,12 +7,12 @@ sub SayWhen : ATTR(CODE) {
 	my ($package, $sym, $code, $name, $data) = @_;
 
 	no warnings 'redefine';
-	my $name   = "${package}::" . *{$sym}{NAME};
+	my $fullname   = "${package}::" . *{$sym}{NAME};
 	my $prefix = $data->[0] || '>';
 	*{$sym} = sub {
-		print "$prefix Entering $name\n";
+		print "$prefix Entering $fullname\n";
 		my @results = $code->(@_);
-		print "$prefix Exiting $name\n";
+		print "$prefix Exiting $fullname\n";
 		return @results;
 	};
 }
