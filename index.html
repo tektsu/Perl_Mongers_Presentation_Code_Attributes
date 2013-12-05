@@ -55,7 +55,7 @@
 
 	  <div class="slide">
 		<h1>Variable Attributes</h1>
-		<p><strong>WARNING:</strong> attribute declarations for variables are still evolving. The semantics and interfaces of such declarations could change in future versions. They are present for purposes of experimentation with what the semantics ought to be. Do not rely on the current implementation of this feature.</p>
+		<p><strong>WARNING:</strong> Attribute declarations for variables are still evolving. The semantics and interfaces of such declarations could change in future versions. They are present for purposes of experimentation with what the semantics ought to be. Do not rely on the current implementation of this feature.</p>
 	  </div>
 
 	  <div class="slide">
@@ -251,13 +251,13 @@ sub SayWhen : ATTR(CODE) {
 	    $name, $data) = @_;
 
 	no warnings 'redefine';
-	my $name  = "${package}::"
+	my $fullname  = "${package}::"
 	  . *{$sym}{NAME};
 	my $prefix = $data->[0] || '>';
 	*{$sym} = sub {
-		print "$prefix Entering $name\n";
+		print "$prefix Entering $fullname\n";
 		my @results = $code->(@_);
-		print "$prefix Exiting $name\n";
+		print "$prefix Exiting $fullname\n";
 		return @results;
 	};
 }
